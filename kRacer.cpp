@@ -1,4 +1,9 @@
-int main()
+#include <kgmGame/kgmGameApp.h>
+
+class kRaser: public kgmGameApp
 {
-  return 0;
-}
+
+};
+
+
+kRaser app;

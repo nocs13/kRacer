@@ -5,10 +5,11 @@ subdirs := $(wildcard src/)
 objects := $(patsubst %.cpp,%.o,$(sources))
 
 OUT_BIN = kRacer.bin
-OUT_SO  = kRacer.so
 OUT_A   = kRacer.a
 
-DIRS    = -I ./src -L ./lib -L ../kgmEngine/kgmSystem/lib
+DIRS    = -I ../kgmEngine -L ../kgmEngine -L ../kgmEngine/kgmSystem/lib
+
+LIBS += -lkgmEngine
 
 ifeq ($(OS), Linux)
 else
@@ -34,14 +35,8 @@ debug: set_debug $(OUT_BIN)
 $(objects) : %.o : %.cpp %.h
 	$(CC) $(FLGS) $(DEFS) -c $< -o $@ $(DIRS)
 
-$(OUT_A): $(objects)
-	$(AR) -r -c -s $(OUT_A) $(objects)
-
-$(OUT_SO): $(objects)
-	$(CC) -shared -o $(OUT_SO) $(objects) $(FLGS) $(DEFS) $(DIRS) $(LIBS)
-
-$(OUT_BIN): $(OUT_SO) $(OUT_A) kRacer.cpp
-	$(CC) -g -o $(OUT_BIN) kRacer.cpp -O0 -Werror $(DEFS) $(DIRS) $(LIBS)
+$(OUT_BIN): $(objects)
+	$(CC) -g -o $(OUT_BIN) $(objects) -O0 -Werror $(DEFS) $(DIRS) $(LIBS)
 
 clean:
 	$(RM) $(OUT_BIN) $(OUT_SO) $(OUT_A) *.o
