@@ -30,7 +30,7 @@ public:
 
     game = std::unique_ptr<kGame>(new kGame());
 
-    kgmGameBase::m_game = (kgmGameBase*) (kGame*) game.get();
+    m_game = (kgmGameBase*) (kGame*) game.get();
 
     game->gInit();
   }
